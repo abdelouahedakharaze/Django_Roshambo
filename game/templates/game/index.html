@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="{% static 'game/styles.css' %}" />
+  </head>
+  <body>
+    <h1>Rock Paper Scissors 🎮</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <label>Choose your weapon:</label><br />
+      {% for choice in choices %}
+      <button type="submit" name="choice" value="{{ choice }}">
+        {{ choice|title }}
+      </button>
+      {% endfor %}
+    </form>
+
+    {% if result %}
+    <h2>
+      Result: You chose <strong>{{ player_choice }}</strong>, Computer chose
+      <strong>{{ computer_choice }}</strong> —
+      <strong>{{ result|title }}</strong>!
+    </h2>
+    {% endif %}
+
+    <h3>Last 10 Games:</h3>
+    <ul>
+      {% for game in history %}
+      <li>
+        {{ game.played_at|date:"H:i:s" }} - You: {{ game.player_choice }} |
+        Computer: {{ game.computer_choice }} | Result: {{ game.result }}
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
